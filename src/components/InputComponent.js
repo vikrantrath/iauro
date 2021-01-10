@@ -17,7 +17,7 @@ export default function InputComponent({
   setValue,
   label,
   validations,
-  required = false,
+  required,
 }) {
   const [error, setError] = useState(undefined);
   const classes = useStyles();
@@ -26,7 +26,7 @@ export default function InputComponent({
     //validate Here
     const value = event.target.value;
     const validator = getValidator(validations);
-    if (validator && validator.test(value)) {
+    if (!validator || validator.test(value)) {
       setValue(event.target.value);
       setError(undefined);
     } else {
@@ -52,7 +52,7 @@ export default function InputComponent({
       required={required}
     >
       <InputLabel htmlFor={value}>{label}</InputLabel>
-      <Input id={value} required value={value} onChange={validateAndSave} />
+      <Input id={value} value={value} onChange={validateAndSave} />
       {error && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
